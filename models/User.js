@@ -13,6 +13,9 @@ var userSchema = new mongoose.Schema({
   instagram: String,
   linkedin: String,
   tokens: Array,
+  
+  totalWaterDaysCompleted : Number,
+  lastWaterDayCompleted : Date,
 
   profile: {
     name: { type: String, default: '' },
