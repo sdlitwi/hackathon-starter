@@ -1,20 +1,21 @@
 extends layout
 
 block content
-  h1 MG Water Drive
-  p.lead Track water for WOW points
-  hr
-  .row
-    .col-sm-6
-      h2 Why Drink More Water?
-      p
-        ul
-          li reason 1
-          li reason 2
-          li reason 3
-    .col-sm-6
-      img.img-responsive(src='public/water.jpg')
-      h2 Did You Drink Your Water Today?
-      p 2 full bottles or ~50oz
-      p
-        a.btn.btn-default(href='#', role='button') YES!! »
+  
+    .col-sm-12
+      img.img-responsive(src='/images/droplet.png', style='margin-left: auto; margin-right: auto; padding-right:3%; max-height:400px;')
+  
+    .col-sm-12
+      div(style='text-align:center;')
+          h2 Did You Drink Your Water Today?
+          p (2 full bottles or ~50oz)
+          p
+            a.btn.btn-lg(href='#', role='button') YES
+            a.btn.btn-lg(href='#', role='button') NO
+            p   To date you have completed 
+                strong 0 
+                span out of 
+                strong 16
+                span  days
+
+      
