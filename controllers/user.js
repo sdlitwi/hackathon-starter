@@ -140,22 +140,30 @@ exports.postUpdateProfile = function(req, res, next) {
 exports.postLogWaterDay = function(req, res, next) {
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
-    var days = user.totalWaterDaysCompleted;
-    var lastUpdate = user.lastWaterDayCompleted;
 
-    if(user.lastWaterDayCompleted.toLocaleDateString("en-US") === new Date().toLocaleDateString("en-US")){
+    var days = user.totalWaterDaysCompleted;
+
+    var lastUpdate = user.lastWaterDayCompleted;
+    if(lastUpdate == undefined){
+      lastUpdate = new Date("October 13, 2014 11:13:00");
+    }
+
+    if(lastUpdate.toLocaleDateString("en-US") === new Date().toLocaleDateString("en-US")){
       req.flash('errors', { msg: 'You have already logged today.' });
+      res.redirect('/');
     }
     else{
-      user.totalWaterDaysCompleted = days++;
+      user.lastWaterDayCompleted = new Date().toLocaleDateString("en-US");
+      if(days == undefined)
+        user.totalWaterDaysCompleted = 1;
+      else
+        user.totalWaterDaysCompleted = days += 1;
       req.flash('success', { msg: 'Water logged successfully' });
       user.save(function(err) {
         if (err) return next(err);
         res.redirect('/');
       });
     }
-
-
   });
 };
 

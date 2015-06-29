@@ -11,16 +11,23 @@ block content
           h2 Did You Drink Your Water Today?
           p (2 full bottles or ~50oz)
           p
-            form(action='/account/logwaterday', method='POST')
-              a.btn.btn-lg(href='#', role='button') YES
-            a.btn.btn-lg(href='#', role='button') NO
+            table(style='margin-left: auto; margin-right: auto;')
+              tr
+                td
+                  form(action='/account/logwaterday', method='POST')
+                    input(type='hidden', name='_csrf', value=_csrf)
+                    button.btn.btn-lg(type='submit', style='color: #4d90fc;background-color:transparent;') YES
+                td
+                  a.btn.btn-lg(href='#', role='button' onclick='randomLink();') NO
             p To date you have completed 
-              strong #{user.profile.totalWaterDaysCompleted }
-              span out of 
-              strong 16
-              span  days
+              strong #{user.totalWaterDaysCompleted || 0}&nbsp;
+              if(user.totalWaterDaysCompleted == 1)
+                span day
+              else
+                span days
         else
-          Please log in above to get started.
+          p
+            strong Please log in above to get started.
             
 
       
