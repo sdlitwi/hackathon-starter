@@ -7,15 +7,20 @@ block content
   
     .col-sm-12
       div(style='text-align:center;')
+        if user
           h2 Did You Drink Your Water Today?
           p (2 full bottles or ~50oz)
           p
-            a.btn.btn-lg(href='#', role='button') YES
+            form(action='/account/logwaterday', method='POST')
+              a.btn.btn-lg(href='#', role='button') YES
             a.btn.btn-lg(href='#', role='button') NO
-            p   To date you have completed 
-                strong 0 
-                span out of 
-                strong 16
-                span  days
+            p To date you have completed 
+              strong #{user.profile.totalWaterDaysCompleted }
+              span out of 
+              strong 16
+              span  days
+        else
+          Please log in above to get started.
+            
 
       

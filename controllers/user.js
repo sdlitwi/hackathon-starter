@@ -134,6 +134,32 @@ exports.postUpdateProfile = function(req, res, next) {
 };
 
 /**
+ * POST /account/logwaterday
+ * Log Water for Day.
+ */
+exports.postLogWaterDay = function(req, res, next) {
+  User.findById(req.user.id, function(err, user) {
+    if (err) return next(err);
+    var days = user.totalWaterDaysCompleted;
+    var lastUpdate = user.lastWaterDayCompleted;
+
+    if(user.lastWaterDayCompleted.toLocaleDateString("en-US") === new Date().toLocaleDateString("en-US")){
+      req.flash('errors', { msg: 'You have already logged today.' });
+    }
+    else{
+      user.totalWaterDaysCompleted = days++;
+      req.flash('success', { msg: 'Water logged successfully' });
+      user.save(function(err) {
+        if (err) return next(err);
+        res.redirect('/');
+      });
+    }
+
+
+  });
+};
+
+/**
  * POST /account/password
  * Update current password.
  */
@@ -264,8 +290,8 @@ exports.postReset = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Your Hackathon Starter password has been changed',
+        from: 'sdlitwiller@gmail.com',
+        subject: 'Your MG Water Drive password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
@@ -339,8 +365,8 @@ exports.postForgot = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
+        from: 'sdlitwiller@.gmail.com',
+        subject: 'Reset your password on MG Water Drive',
         text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +
