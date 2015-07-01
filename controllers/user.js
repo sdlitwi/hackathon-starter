@@ -141,19 +141,26 @@ exports.postLogWaterDay = function(req, res, next) {
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
 
+    var today = new Date();
+    //todo - move this and user config variable
+    var programStart = new Date("July 1, 2015");
+
+    //get days program has been active (should be seperate function)
+    var timeDiff = Math.abs(today.getTime() - programStart.getTime());
+    var maxDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
     var days = user.totalWaterDaysCompleted;
 
     var lastUpdate = user.lastWaterDayCompleted;
     if(lastUpdate == undefined){
       lastUpdate = new Date("October 13, 2014 11:13:00");
     }
-
-    if(lastUpdate.toLocaleDateString("en-US") === new Date().toLocaleDateString("en-US")){
-      req.flash('errors', { msg: 'You have already logged today.' });
+    if(maxDays == user.totalWaterDaysCompleted){
+      req.flash('success', { msg: 'You have logged every day. Good job!!' });
       res.redirect('/');
     }
     else{
-      user.lastWaterDayCompleted = new Date().toLocaleDateString("en-US");
+      user.lastWaterDayCompleted = today.toLocaleDateString("en-US");
       if(days == undefined)
         user.totalWaterDaysCompleted = 1;
       else
